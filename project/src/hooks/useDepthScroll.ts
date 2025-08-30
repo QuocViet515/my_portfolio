@@ -6,14 +6,14 @@ export function useDepthScroll() {
 
   useEffect(() => {
     if (!isUnlocked) return;
+    const isTouch = 'ontouchstart' in window;
 
     const handleScroll = (e: WheelEvent) => {
+      if (isTouch) return; // mobile: không đụng vào touch cuộn panel
       e.preventDefault();
-      
-      setDepth(prevDepth => {
+      setDepth(prev => {
         const delta = e.deltaY > 0 ? 0.1 : -0.1;
-        const newDepth = Math.max(0, Math.min(4, prevDepth + delta));
-        return newDepth;
+        return Math.max(0, Math.min(4, prev + delta));
       });
     };
 
@@ -29,16 +29,11 @@ export function useDepthScroll() {
 
     window.addEventListener('wheel', handleScroll, { passive: false });
     window.addEventListener('keydown', handleKeyDown);
-
     return () => {
       window.removeEventListener('wheel', handleScroll);
       window.removeEventListener('keydown', handleKeyDown);
     };
   }, [isUnlocked]);
 
-  return {
-    depth,
-    isUnlocked,
-    setIsUnlocked
-  };
+  return { depth, setDepth, isUnlocked, setIsUnlocked };
 }

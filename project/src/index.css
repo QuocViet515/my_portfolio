@@ -4,7 +4,26 @@
 @tailwind utilities;
 
 
+@media (max-width: 768px) {
+  body {
+    /* Trên mobile: cho phép trang cuộn tự nhiên */
+    overflow: auto;
+  }
+}
+.panel-scroll {
+  height: 100vh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: contain; /* tránh bounce lên body */
+}
+.panel-scroll {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE, Edge */
+}
 
+.panel-scroll::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
 @layer base {
   * {
     font-family: 'JetBrains Mono', monospace;
