@@ -36,15 +36,20 @@ const projects = [
   }
 ];
 
+function isMobileDevice() {
+  return typeof window !== "undefined" && ("ontouchstart" in window || navigator.maxTouchPoints > 0);
+}
+
 export default function Projects({ depth }: ProjectsProps) {
-  const isVisible = depth >= 1.8 && depth < 2.8;
-  
+  const isMobile = isMobileDevice();
+  const isVisible = isMobile ? true : (depth >= 1.8 && depth < 2.8);
+
   return (
     <motion.div
       className="relative z-30 text-center"
       style={{
-        transform: `scale(${1 + (depth - 2) * 0.1}) translateZ(${(depth - 2) * 100}px)`,
-        opacity: isVisible ? Math.max(0, 1 - Math.abs(depth - 2.3) * 2) : 0
+        transform: isMobile ? undefined : `scale(${1 + (depth - 2) * 0.1}) translateZ(${(depth - 2) * 100}px)`,
+        opacity: isMobile ? 1 : (isVisible ? Math.max(0, 1 - Math.abs(depth - 2.3) * 2) : 0)
       }}
     >
       <div className="max-w-6xl mx-auto px-6">

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Github, Linkedin, Mail, Send, Phone } from 'lucide-react';
 
@@ -6,12 +6,17 @@ interface ContactProps {
   depth: number;
 }
 
+function isMobileDevice() {
+  return typeof window !== "undefined" && ("ontouchstart" in window || navigator.maxTouchPoints > 0);
+}
+
 export default function Contact({ depth }: ContactProps) {
   const [formData, setFormData] = useState({ name: '', email: '', message: '', hp: '' });
   const [isSending, setIsSending] = useState(false);
   const [status, setStatus] = useState<'idle' | 'ok' | 'err'>('idle');
 
-  const isVisible = depth >= 2.8;
+  const isMobile = isMobileDevice();
+  const isVisible = isMobile ? true : depth >= 2.8;
   const GAS_URL = import.meta.env.VITE_GAS_CONTACT_URL as string;
 
   const contactLinks = [
@@ -21,7 +26,6 @@ export default function Contact({ depth }: ContactProps) {
     { icon: Phone, label: 'Phone', href: 'tel:0373902374', color: 'hover:text-yellow-400' },
   ];
 
-  // Allow typing space in inputs without triggering global depth hotkey
   const stopSpaceBubble = (e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     if (e.key === ' ' || e.code === 'Space') e.stopPropagation();
   };
@@ -36,19 +40,13 @@ export default function Contact({ depth }: ContactProps) {
     try {
       setIsSending(true);
       setStatus('idle');
-
-      // Use FormData and DO NOT set Content-Type manually
       const fd = new FormData();
       fd.append('name', formData.name);
       fd.append('email', formData.email);
       fd.append('message', formData.message);
-      fd.append('hp', formData.hp); // honeypot (should be empty)
-
+      fd.append('hp', formData.hp);
       const res = await fetch(GAS_URL, { method: 'POST', body: fd });
-      // If GAS is public web app, this should succeed without CORS issues
       if (!res.ok) throw new Error('Request failed');
-
-      // Some GAS setups may not return CORS-readable body; still treat as ok if res.ok
       setStatus('ok');
       setFormData({ name: '', email: '', message: '', hp: '' });
     } catch (err) {
@@ -63,14 +61,21 @@ export default function Contact({ depth }: ContactProps) {
     <motion.div
       className="relative z-40 text-center min-h-screen flex items-center"
       style={{
-        transform: `scale(${1 + (depth - 3) * 0.1}) translateZ(${(depth - 3) * 100}px)`,
-        opacity: isVisible ? Math.max(0, 1 - Math.abs(depth - 3.3) * 1) : 0,
+        transform: isMobile
+          ? undefined
+          : `scale(${1 + (depth - 3) * 0.1}) translateZ(${(depth - 3) * 100}px)`,
+        opacity: isMobile
+          ? 1
+          : (isVisible ? Math.max(0, 1 - Math.abs(depth - 3.3) * 1) : 0),
       }}
     >
       <div className="max-w-4xl mx-auto px-6 w-full">
         <motion.h2
           initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : 30 }}
+          animate={{
+            opacity: isMobile ? 1 : (isVisible ? 1 : 0),
+            y: isMobile ? 0 : (isVisible ? 0 : 30)
+          }}
           className="text-3xl md:text-5xl font-mono font-bold text-cyan-400 mb-12"
         >
           [ESTABLISH CONNECTION]
@@ -80,7 +85,10 @@ export default function Contact({ depth }: ContactProps) {
           {/* Links */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: isVisible ? 1 : 0, x: isVisible ? 0 : -50 }}
+            animate={{
+              opacity: isMobile ? 1 : (isVisible ? 1 : 0),
+              x: isMobile ? 0 : (isVisible ? 0 : -50)
+            }}
             transition={{ delay: 0.2 }}
           >
             <h3 className="text-xl font-mono text-green-400 mb-8">Direct Channels</h3>
@@ -90,7 +98,10 @@ export default function Contact({ depth }: ContactProps) {
                   key={link.label}
                   href={link.href}
                   initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: isVisible ? 1 : 0, x: isVisible ? 0 : -20 }}
+                  animate={{
+                    opacity: isMobile ? 1 : (isVisible ? 1 : 0),
+                    x: isMobile ? 0 : (isVisible ? 0 : -20)
+                  }}
                   transition={{ delay: index * 0.1 + 0.4 }}
                   whileHover={{ scale: 1.05, x: 10 }}
                   className={`flex items-center gap-4 p-4 bg-gray-800/40 border border-gray-600 rounded-lg hover:border-cyan-400/60 transition-all duration-300 ${link.color}`}
@@ -106,7 +117,10 @@ export default function Contact({ depth }: ContactProps) {
           {/* Form */}
           <motion.div
             initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: isVisible ? 1 : 0, x: isVisible ? 0 : 50 }}
+            animate={{
+              opacity: isMobile ? 1 : (isVisible ? 1 : 0),
+              x: isMobile ? 0 : (isVisible ? 0 : 50)
+            }}
             transition={{ delay: 0.4 }}
           >
             <h3 className="text-xl font-mono text-green-400 mb-8">Secure Message</h3>
@@ -180,7 +194,10 @@ export default function Contact({ depth }: ContactProps) {
         {/* Footer */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : 20 }}
+          animate={{
+            opacity: isMobile ? 1 : (isVisible ? 1 : 0),
+            y: isMobile ? 0 : (isVisible ? 0 : 20)
+          }}
           transition={{ delay: 0.8 }}
           className="mt-16 pt-8 border-t border-gray-700"
         >

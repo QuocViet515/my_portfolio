@@ -33,23 +33,28 @@ const techCategories = [
   },
 ];
 
+function isMobileDevice() {
+  return typeof window !== "undefined" && ("ontouchstart" in window || navigator.maxTouchPoints > 0);
+}
+
 export default function Skills({ depth }: SkillsProps) {
-  // Giữ vùng hiển thị chính quanh lớp depth ~ 1 (giống Skills cũ)
-  const isVisible = depth >= 0.8 && depth < 1.8;
+  const isMobile = isMobileDevice();
 
-  // Hiệu ứng "đi sâu vào lớp": scale + translateZ + fade
-  const fgScale = 1 + (depth - 1) * 0.1;
-  const fgTranslateZ = (depth - 1) * 100;
-  const fgOpacity = isVisible ? Math.max(0, 1 - Math.abs(depth - 1.3) * 2) : 0;
+  // Nếu là mobile, luôn hiển thị rõ, không hiệu ứng động theo depth
+  const isVisible = isMobile ? true : depth >= 0.8 && depth < 1.8;
 
-  // Nền parallax xoay/di chuyển theo chiều sâu
-  const bgTransform = `translateY(${depth * 150}px) rotateX(${depth * 5}deg)`;
-  const bgConic = `conic-gradient(from ${depth * 180}deg, rgba(59,130,246,0.3), rgba(16,185,129,0.3), rgba(239,68,68,0.3))`;
+  const fgScale = isMobile ? 1 : 1 + (depth - 1) * 0.1;
+  const fgTranslateZ = isMobile ? 0 : (depth - 1) * 100;
+  const fgOpacity = isMobile ? 1 : isVisible ? Math.max(0, 1 - Math.abs(depth - 1.3) * 2) : 0;
 
-  // Header (dùng style props của Framer để tránh conflict transform string)
-  const headerOpacity = Math.max(0, 1 - depth * 0.2);
-  const headerRotateX = depth * 10;
-  const headerY = -depth * 40;
+  const bgTransform = isMobile ? undefined : `translateY(${depth * 150}px) rotateX(${depth * 5}deg)`;
+  const bgConic = isMobile
+    ? `conic-gradient(from 0deg, rgba(59,130,246,0.3), rgba(16,185,129,0.3), rgba(239,68,68,0.3))`
+    : `conic-gradient(from ${depth * 180}deg, rgba(59,130,246,0.3), rgba(16,185,129,0.3), rgba(239,68,68,0.3))`;
+
+  const headerOpacity = isMobile ? 1 : Math.max(0, 1 - depth * 0.2);
+  const headerRotateX = isMobile ? 0 : depth * 10;
+  const headerY = isMobile ? 0 : -depth * 40;
 
   return (
     <motion.section
@@ -112,10 +117,10 @@ export default function Skills({ depth }: SkillsProps) {
               className="group bg-slate-800/60 backdrop-blur-sm p-6 rounded-xl border border-slate-700 hover:border-slate-500 transition-all duration-500"
               style={{
                 // Parallax theo từng card (so le trái/phải, tiến sát theo độ sâu)
-                y: -depth * (20 + index * 10),
-                x: depth * (index % 2 === 0 ? -20 : 20),
-                scale: 1 - depth * 0.05,
-                opacity: Math.max(0, 1 - depth * 0.3),
+                y: isMobile ? 0 : -depth * (20 + index * 10),
+                x: isMobile ? 0 : depth * (index % 2 === 0 ? -20 : 20),
+                scale: isMobile ? 1 : 1 - depth * 0.05,
+                opacity: isMobile ? 1 : Math.max(0, 1 - depth * 0.3),
               }}
             >
               <div className="flex items-center mb-4">

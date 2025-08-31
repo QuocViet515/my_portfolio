@@ -9,18 +9,27 @@ import MatrixBackground from './components/MatrixBackground';
 import { useDepthScroll } from './hooks/useDepthScroll';
 import Section from './components/Section';
 
+function isTouchDevice() {
+  return typeof window !== 'undefined' && ('ontouchstart' in window || navigator.maxTouchPoints > 0);
+}
+
 function App() {
   const { depth, setDepth, isUnlocked, setIsUnlocked } = useDepthScroll();
+  const isTouch = isTouchDevice();
 
-  // ====== Focus tuning ======
-  // Khi depth ~ 2.7 -> panel tiếp theo (index 3) rõ nhất
-  const FOCUS_SHIFT = 0.3;         // 3 - 2.7 = 0.3 (dịch tiêu điểm lên trước 0.3)
-  const DIST_PER_STEP = 40;        // khoảng cách giữa các lớp
+  const panels = [
+    <PersonalInfo depth={depth} key="personal" />,
+    <Skills depth={depth} key="skills" />,
+    <Projects depth={depth} key="projects" />,
+    <Contact depth={depth} key="contact" />,
+  ];
 
   const active = useMemo(() => Math.round(depth), [depth]);
   const clamp = (v: number) => Math.max(0, Math.min(3, v)); // 4 panels: 0..3
 
-  // Tính translateZ dựa trên (depth + FOCUS_SHIFT - index)
+  // Desktop: hiệu ứng depth
+  const FOCUS_SHIFT = 0.3;
+  const DIST_PER_STEP = 40;
   const panelStyle = (index: number) => ({
     transform: `translateZ(${-(depth + FOCUS_SHIFT - index) * DIST_PER_STEP}px)`,
     pointerEvents: active === index ? 'auto' : 'none',
@@ -51,49 +60,31 @@ function App() {
             </div>
           </div>
 
-
-          {/* Layers */}
-          <div className="relative perspective-1000">
-            {/* 0 - PersonalInfo */}
-            <div className="absolute inset-0 transition-transform duration-500 ease-out"
-                 style={panelStyle(0)}>
-              <Section onNext={goNext} onPrev={goPrev} enabled={active === 0}>
-                <div className="min-h-screen flex items-center justify-center">
-                  <PersonalInfo depth={depth} />
+          {/* Mobile: chỉ render panel hiện tại, không hiệu ứng depth */}
+          {isTouch ? (
+            <Section onNext={goNext} onPrev={goPrev} enabled={true} isMobile>
+              <div className="min-h-screen flex items-center justify-center">
+                {panels[active]}
+              </div>
+            </Section>
+          ) : (
+            // Desktop: hiệu ứng depth như cũ
+            <div className="relative perspective-1000">
+              {panels.map((Panel, idx) => (
+                <div
+                  key={idx}
+                  className="absolute inset-0 transition-transform duration-500 ease-out"
+                  style={panelStyle(idx)}
+                >
+                  <Section onNext={goNext} onPrev={goPrev} enabled={active === idx}>
+                    <div className="min-h-screen flex items-center justify-center">
+                      {Panel}
+                    </div>
+                  </Section>
                 </div>
-              </Section>
+              ))}
             </div>
-
-            {/* 1 - Skills */}
-            <div className="absolute inset-0 transition-transform duration-500 ease-out"
-                 style={panelStyle(1)}>
-              <Section onNext={goNext} onPrev={goPrev} enabled={active === 1}>
-                <div className="min-h-screen flex items-center justify-center">
-                  <Skills depth={depth} />
-                </div>
-              </Section>
-            </div>
-
-            {/* 2 - Projects */}
-            <div className="absolute inset-0 transition-transform duration-500 ease-out"
-                 style={panelStyle(2)}>
-              <Section onNext={goNext} onPrev={goPrev} enabled={active === 2}>
-                <div className="min-h-screen flex items-center justify-center">
-                  <Projects depth={depth} />
-                </div>
-              </Section>
-            </div>
-
-            {/* 3 - Contact */}
-            <div className="absolute inset-0 transition-transform duration-500 ease-out"
-                 style={panelStyle(3)}>
-              <Section onNext={goNext} onPrev={goPrev} enabled={active === 3}>
-                <div className="min-h-screen flex items-center justify-center">
-                  <Contact depth={depth} />
-                </div>
-              </Section>
-            </div>
-          </div>
+          )}
         </div>
       )}
     </div>

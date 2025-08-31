@@ -8,7 +8,8 @@ interface PersonalInfoProps {
 
 export default function PersonalInfo({ depth }: PersonalInfoProps) {
   // Clamp helpers to avoid negative scale/opacity
-  const clamp = (n: number, min: number, max: number) => Math.min(Math.max(n, min), max);
+  const clamp = (n: number, min: number, max: number) =>
+    Math.min(Math.max(n, min), max);
 
   // Foreground transform (keeps your "piercing layers" feel)
   const fgScale = 1 + depth * 0.1;
@@ -55,7 +56,10 @@ export default function PersonalInfo({ depth }: PersonalInfoProps) {
             }}
             transition={{ duration: 0.8 }}
           >
-            <motion.div className="relative mx-auto w-32 h-32 mb-6" whileHover={{ scale: 1.05 }}>
+            <motion.div
+              className="relative mx-auto w-32 h-32 mb-6"
+              whileHover={{ scale: 1.05 }}
+            >
               {/* Gradient ring */}
               <div className="absolute inset-0 bg-gradient-to-br from-blue-400 to-cyan-500 rounded-full animate-pulse" />
               {/* Inner circle with icon */}
@@ -91,10 +95,12 @@ export default function PersonalInfo({ depth }: PersonalInfoProps) {
                 <span>Sinh viên An toàn Thông tin</span>
               </div>
 
-              <p className="text-slate-300 text-lg max-w-2xl mx-auto leading-relaxed">
+              <p className="text-slate-300 text-sm   max-w-2xl mx-auto leading-relaxed">
                 Chào mừng bạn đến với không gian số của tôi! <br />
-                Tôi là một sinh viên ngành An toàn thông tin vàlà sinh viên năm 3 tại Đại học Công nghệ Thông Tin - ĐHQG TPHCM <br />
-                Hãy cùng tôi khám phá chi tiết về hành trình học tập và đam mê của tôi trong lĩnh vực an ninh mạng.
+                Tôi hiện là sinh viên năm 3 ngành An toàn thông tin tại Trường
+                Đại học Công nghệ Thông tin – ĐHQG TP.HCM. <br />
+                Hãy cùng tôi bước vào hành trình khám phá kiến thức, trải nghiệm
+                và niềm đam mê trong lĩnh vực an ninh mạng.
               </p>
             </div>
 

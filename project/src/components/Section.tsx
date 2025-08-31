@@ -5,14 +5,16 @@ type Props = {
   onNext: () => void;
   onPrev: () => void;
   enabled?: boolean; // chỉ panel active mới nhận tương tác
+  isMobile?: boolean; // thêm prop này để biết đang ở mobile
 };
 
-export default function Section({ children, onNext, onPrev, enabled = true }: Props) {
+export default function Section({ children, onNext, onPrev, enabled = true, isMobile = false }: Props) {
   const ref = useRef<HTMLDivElement | null>(null);
   const isTouch = typeof window !== "undefined" && "ontouchstart" in window;
 
   useEffect(() => {
-    if (!isTouch || !enabled || !ref.current) return;
+    // Chỉ xử lý vuốt khi là mobile (isMobile) và enabled
+    if (!isMobile || !isTouch || !enabled || !ref.current) return;
     const el = ref.current;
 
     let startY = 0;
@@ -43,7 +45,7 @@ export default function Section({ children, onNext, onPrev, enabled = true }: Pr
       el.removeEventListener("touchmove", onMove);
       el.removeEventListener("touchend", onEnd);
     };
-  }, [isTouch, enabled, onNext, onPrev]);
+  }, [isMobile, isTouch, enabled, onNext, onPrev]);
 
   return (
     <div
