@@ -9,30 +9,30 @@ interface ProjectsProps {
 const projects = [
   {
     id: 1,
-    title: "SecureVault",
-    description: "Hệ thống quản lý mật khẩu enterprise với mã hóa AES-256",
-    tech: ["Python", "FastAPI", "PostgreSQL", "Redis"],
+    title: "UIT Study Share",
+    description: "Website chia sẻ học liệu cho sinh viên UIT",
+    tech: ["ReactJS", "NodeJS", "TailwindCSS", "MongoDB"],
     icon: Shield,
-    github: "#",
+    github: "https://github.com/trieu12a22005/UItStudyShare.git",
     demo: "#"
   },
   {
     id: 2,
-    title: "ThreatHunter",
-    description: "AI-powered threat detection system cho network monitoring",
-    tech: ["Machine Learning", "Wireshark", "ELK Stack"],
+    title: "Pingme App",
+    description: "Ứng dụng chat real-time tích hợp bảo mật đầu cuối",
+    tech: [".NET", "Firebase", "Cryptoghraphy"],
     icon: Eye,
-    github: "#",
-    demo: "#"
+    github: "https://github.com/QuocViet515/NetworkProgramingProject.git",
+    demo: "https://drive.google.com/drive/folders/1wcNUU87tdzPywgcETeLq79cMxjcrLc4e?usp=sharing"
   },
   {
     id: 3,
-    title: "PenTest Framework",
-    description: "Automated penetration testing toolkit cho web applications",
-    tech: ["Python", "Burp Suite API", "Docker"],
+    title: "HA on Linux (CentOS Stream 9)",
+    description: "Hệ thống có tính sẵn cao sử dụng Pacemaker/Corosync",
+    tech: ["Pacemaker", "Corosync", "CentOS"],
     icon: Zap,
     github: "#",
-    demo: "#"
+    demo: "https://drive.google.com/file/d/1FWHRgPyEF3voHZHLdstgZsI-7Kb7_yEt/view?usp=sharing"
   }
 ];
 
