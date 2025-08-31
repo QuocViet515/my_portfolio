@@ -67,8 +67,15 @@ export default function PersonalInfo({ depth }: PersonalInfoProps)
               {/* Gradient ring */}
               <div className="absolute inset-0 bg-gradient-to-br from-blue-400 to-cyan-500 rounded-full animate-pulse" />
               {/* Inner circle with icon */}
-              <div className="absolute inset-2 bg-slate-800 rounded-full flex items-center justify-center">
-                <User className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 text-blue-400" />
+              <div className="absolute inset-2 bg-slate-800 rounded-full flex items-center justify-center overflow-hidden">
+                {/* Thêm avatar thật của bạn ở đây */}
+                <img
+                  src="/img/profile.jpg"
+                  alt="Avatar"
+                  className="w-full h-full object-cover rounded-full"
+                />
+                {/* Nếu muốn giữ icon User làm fallback: */}
+                {/* <User className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 text-blue-400 absolute inset-0 m-auto" /> */}
               </div>
               {/* Rotating subtle outline */}
               <motion.div
