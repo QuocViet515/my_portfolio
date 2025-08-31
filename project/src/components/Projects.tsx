@@ -23,7 +23,7 @@ const projects = [
     tech: [".NET", "Firebase", "Cryptoghraphy"],
     icon: Eye,
     github: "https://github.com/QuocViet515/NetworkProgramingProject.git",
-    demo: "https://drive.google.com/drive/folders/1wcNUU87tdzPywgcETeLq79cMxjcrLc4e?usp=sharing"
+    demo: "https://drive.google.com/file/d/1iBXm7NXszwjiivom9q76RqX0Vs_uVV7m/view?usp=sharing"
   },
   {
     id: 3,
