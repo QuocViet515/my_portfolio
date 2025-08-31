@@ -108,8 +108,7 @@ export default function PersonalInfo({ depth }: PersonalInfoProps)
 
               <p className="text-slate-300 text-xs sm:text-sm md:text-base max-w-md sm:max-w-2xl mx-auto leading-6 sm:leading-7 md:leading-relaxed">
                 Chào mừng bạn đến với không gian số của tôi! <br />
-                Tôi hiện là sinh viên năm 3 ngành An toàn thông tin tại Trường
-                Đại học Công nghệ Thông tin – ĐHQG TP.HCM. <br />
+                Tôi hiện là sinh viên năm 3 ngành An toàn thông tin. <br />
                 Hãy cùng tôi bước vào hành trình khám phá kiến thức, trải nghiệm
                 và niềm đam mê trong lĩnh vực an ninh mạng.
               </p>
@@ -124,7 +123,7 @@ export default function PersonalInfo({ depth }: PersonalInfoProps)
                 <Calendar className="w-5 h-5 sm:w-6 sm:h-6 text-blue-400 mb-1.5 sm:mb-2" />
                 <p className="text-white font-medium text-sm sm:text-base">Năm 3</p>
                 <p className="text-slate-400 text-xs sm:text-sm">
-                  Trường đại học Công nghệ Thông Tin - ĐHQG TPHCM
+                  Trường đại học CNTT - ĐHQG TPHCM
                 </p>
               </motion.div>
 
@@ -133,7 +132,7 @@ export default function PersonalInfo({ depth }: PersonalInfoProps)
                 className="bg-slate-800/50 backdrop-blur-sm p-3 sm:p-4 rounded-lg border border-slate-700 hover:border-blue-500 transition-all duration-300"
               >
                 <MapPin className="w-5 h-5 sm:w-6 sm:h-6 text-blue-400 mb-1.5 sm:mb-2" />
-                <p className="text-white font-medium text-sm sm:text-base">TP. Hồ Chí Minh</p>
+                <p className="text-white font-medium text-sm sm:text-base">Thủ Đức, TP. Hồ Chí Minh</p>
                 <p className="text-slate-400 text-xs sm:text-sm">Việt Nam</p>
               </motion.div>
 
